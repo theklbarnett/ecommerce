@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Product Management</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'dashboard_style.css' %}">
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#new-product').click(function() {
+				$('.popup-form').css('display', 'inline-block');
+			});
+			
+			$('.close').click(function() {
+				$('.popup-form').css('display', 'none');
+			});
+
+			$('.delete').click(function() {
+				if ($(this).parent().parent().attr('class').includes('product')) {
+					var product_id = $(this).parent().parent().attr('id').slice(1)
+					$.ajax({
+						url: 'ajax/delete_product',
+						data: {
+						'product_id': product_id
+						},
+						dataType: 'json',
+						success: function (data) {
+							if (data['deleted']) {
+								$('#p' + product_id + ".product").remove();
+							}
+						}
+					});
+				}
+			});
+		});
+
+	</script>
+</head>
+<body>
+	<div id="header">
+		<h2>Admin Dashboard</h2>
+		<a href="/dashboard/orders">Orders</a>
+		<a href="/dashboard/products">Products</a>
+		<a href="/dashboard/logout" id="logout">Log off</a>
+	</div>
+	<div id="content">
+		<div class="top-nav">
+			<form method="GET" action="/dashboard/products/">
+				<input type="text" name="search" placeholder="search">
+			</form>
+			<button class="btn-sm btn btn-primary" id="new-product">Add new product</button>
+		</div>
+		<table class="table table-striped table-bordered table-sm">
+			<thead>
+				<tr>
+					<th>Picture</th>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Inventory Count</th>
+					<th>Quantity Sold</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for product in products %}
+					<tr class="product" id="p{{product.id}}">
+						<td><img src="{{product.stock_photo.url}}"></td>
+						<td>{{product.id}}</td>
+						<td>{{product.name}}</td>
+						<td></td>
+						<td></td>
+						<td><a href="">edit</a> | <a href="" class="delete">delete</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<form action="add_product" method="POST" class="popup-form" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div id="form-header">
+				<h6>Add a new product</h6>
+				<button type="reset" class="btn btn-sm btn-outline-light close">X</button>
+			</div>
+			<label>Name
+				<input type="text" name="name">
+			</label>
+			<label>Price
+				<input type="text" name="price">
+			</label>
+			<label>Description
+				<input type="text" name="description">
+			</label>
+			<label>Categories
+				<select name="category">
+					{% for category in categories %}
+						<option value="{{category.id}}">{{category.name}}</option>
+					{% endfor %}
+				</select>
+			</label>
+			<label>or add new category:
+				<input type="text" name="new_category">
+			</label>
+			<label>Images
+		    	<input type="file" name="img" accept="image/*" multiple="multiple">
+		    </label>
+		    <button class="btn btn-sm btn-primary">Add</button>
+		</form>
+	</div>
+</body>
+</html>

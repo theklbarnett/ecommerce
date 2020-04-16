@@ -1,0 +1,100 @@
+#header {
+	width: 100%;
+	border-bottom: 2px solid black;
+	background-color: darkred;
+}
+
+	#header h2 {
+		display: inline-block;
+		vertical-align: bottom;
+		padding-top: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
+		color: white;
+	}
+
+	#header a {
+		display: inline-block;
+		padding: 10px;	
+		color: white;
+	}
+
+	#logout {
+		float: right;
+		margin-top: 12px;
+	}
+
+#content {
+	padding: 10px 40px;
+}
+
+.top-nav {
+	padding: 10px;
+}
+
+	.top-nav #new-product {
+		float: right;
+	}
+
+	.top-nav form {
+		display: inline-block;
+	}
+
+	.top-nav input {
+		border-radius: 8px;
+	}
+
+.popup-form {
+	display: none;
+	position: fixed;
+	left: 25%;
+	top: 25%;
+	width: 50%;
+	border: black solid 1px;
+	background-color: white;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+	#form-header .btn {
+		float: right;
+		color: black;
+	}
+
+	#form-header h6 {
+		display: inline-block;
+	}
+
+	.popup-form input {
+	margin-left: 10px;
+	width: 60%;
+
+	}
+
+label {
+	display: block;
+	text-align: right;
+	margin: 0px 15%;
+}
+
+img {
+	width: 30px;
+	margin-left: 20%;
+}
+
+
+
+@media only screen and (max-width: 530px) {
+	#header h2 {
+		display: block;
+	}
+	#logout {
+		margin-top: 0;
+	}
+	#header a {
+		padding-top: 0;
+	}
+	.rm-small {
+		display: none;
+	}
+}

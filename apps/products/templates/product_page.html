@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>(Product Page) {{product.name}} | eCommerce</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="">
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#quantity').append("<option value='2'>2 ($" + ({{product.price}} * 2.0) + ")</option><option value='3'>3 ($" + ({{product.price}} * 3.0) + ")</option>");
+		});
+	</script>
+</head>
+<body>
+	<div id="header">
+		<h4>eCommerce</h4>
+		<a href="">Shopping Cart {{request.session.cart}}</a>
+		
+
+	</div>
+	<div id="content">
+		<a href="/products">Go Back</a>
+		<h4>{{product.name}}</h4>
+		<div id="pictures">
+			
+		</div>
+		<p>{{product.description}}</p>
+		<select id="quantity">
+			<option value="1">1 (${{product.price}})</option>
+		</select>
+		<div id="similar-items">
+			<h5>Similar Items</h5>
+			{% for item in similar_items %}
+				<div class="similar-item">
+					<img src="{{item.stock_photo.url}}" alt="">
+					<p>{{item.name}}</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</body>
+</html>

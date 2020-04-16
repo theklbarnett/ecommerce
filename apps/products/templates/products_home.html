@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Products Ecommmerce</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'products_home_style.css' %}">
+</head>
+<body>
+	<div id="header">
+		<h4>eCommerce</h4>
+		<a href="">Shopping Cart {{request.session.cart}}</a>
+	</div>
+	<div id="content">
+		<div id="search-bar">
+			<form method="GET" action="/products/search">
+				<input type="text" name="search" placeholder="product name">
+			</form>
+			<h6>Categories</h6>	
+			{% for category in categories %}
+				<a href="/products/category/{{category.name}}">{{category.name}} ({{category.len}})</a>
+			{% endfor %}
+		</div>
+		<div id="items">
+			<h4>{{page}}</h4>
+				{% for product in products %}
+					<div class="item">
+						<a href="/products/show/{{product.id}}">
+							<img src="{{product.stock_photo.url}}">
+						</a>
+						<p class="price">${{product.price}}</p>
+						<p>{{product.name}}</p>
+					</div>
+				{% endfor %}
+		</div>
+	</div>
+</body>
+</html>

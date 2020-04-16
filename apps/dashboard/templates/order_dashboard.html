@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>User Dashboard</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'dashboard_style.css' %}">
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+</head>
+<body>
+	<div id="header">
+		<h2>Admin Dashboard</h2>
+		<a href="/dashboard/orders">Orders</a>
+		<a href="/dashboard/products">Products</a>
+		<a href="/dashboard/logout" id="logout">Log off</a>
+	</div>
+	<div id="content">
+		<div class="topnav">
+			<input type="text" name="search" placeholder="search">
+			<select>
+				<option selected>Show All</option>
+				<option>Order in process</option>
+				<option>Shipped</option>
+				<option>Cancelled</option>
+			</select>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

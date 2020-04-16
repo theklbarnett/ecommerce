@@ -1,0 +1,72 @@
+#header {
+	background-color: aquamarine;
+	border-bottom: black 2px solid;
+	padding: 5px 15px;
+}
+
+	#header a {
+		float: right;
+		margin-top: 15px;
+	}
+
+	#header	h4 {
+		display: inline-block;
+		margin-top: 10px;
+	}
+
+#content {
+	padding: 15px 20px;
+}
+
+#search-bar {
+	margin-left: 5px;
+	display: inline-block;
+	border: black 2px solid;
+	width: 20%;
+	vertical-align: top;
+	padding: 5px;
+}
+
+	#search-bar input {
+		width: 90%;
+		margin: 5px 5% 10px 5%;
+		font-size: 12px;
+	}
+
+	#search-bar h6 {
+		margin-left: 8%;
+	}
+
+	#search-bar a {
+		display: block;
+		margin-left: 10%;
+	}
+
+#items {
+	margin-left: 5px;
+	display: inline-block;
+	border: black 2px solid;
+	width: 75%;
+	padding: 20px;
+}
+
+	.item {
+		display: inline-block;
+		padding: 10px;
+	}
+
+	.item img {
+		width: 100px;
+		height: 100px;
+	}
+
+	.item p {
+		width: 100px;
+		margin: 0;
+	}
+
+	.item .price {
+		font-size: 12px;	
+		color: rgba(0, 0, 0, 0.5);
+		text-align: right;	
+	}
