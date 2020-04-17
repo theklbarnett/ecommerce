@@ -4,7 +4,7 @@
 	<title>(Product Page) {{product.name}} | eCommerce</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	{% load static %}
-	<link rel="stylesheet" type="text/css" href="">
+	<link rel="stylesheet" type="text/css" href="{% static 'product_page_style.css' %}">
 	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 	<script>
 		$(document).ready(function() {
@@ -15,25 +15,33 @@
 <body>
 	<div id="header">
 		<h4>eCommerce</h4>
-		<a href="">Shopping Cart {{request.session.cart}}</a>
-		
-
+		<a href="cart">Shopping Cart ({{request.session.total_items}})</a>
 	</div>
 	<div id="content">
 		<a href="/products">Go Back</a>
 		<h4>{{product.name}}</h4>
-		<div id="pictures">
-			
+		<div id="product-content">
+			<div id="pictures">
+				<img src="{{product.stock_photo.url}}" alt="">
+			</div>
+			<p>{{product.description}}</p>
 		</div>
-		<p>{{product.description}}</p>
-		<select id="quantity">
-			<option value="1">1 (${{product.price}})</option>
-		</select>
+		<form action="/products/add_to_cart" method="POST">
+			{% csrf_token %}
+			<input type="hidden" name="id" value="{{product.id}}">
+			<select id="quantity" name="quantity">
+				<option value="1">1 (${{product.price}})</option>
+			</select>
+			<button class="btn btn-sm btn-primary">Add to cart</button>
+		</form>
 		<div id="similar-items">
 			<h5>Similar Items</h5>
 			{% for item in similar_items %}
 				<div class="similar-item">
-					<img src="{{item.stock_photo.url}}" alt="">
+					<a href="/products/show/{{item.id}}">
+						<img src="{{item.stock_photo.url}}" alt="">
+					</a>
+					<p class="price">${{product.price}}</p>
 					<p>{{item.name}}</p>
 				</div>
 			{% endfor %}

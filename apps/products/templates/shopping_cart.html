@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Products Ecommmerce</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'products_home_style.css' %}">
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			console.log(sessionStorage.length)
+			for (i in sessionStorage){
+				console.log('hi')
+   	 			$('.table > tbody').append('<tr><td>' + localStorage.key(i) + '</td><td></td><td>' + localStorage.getItem(localStorage.key(i)) + '</td><td></td></tr>'
+   	 			);
+			}
+		});
+
+	</script>
+</head>
+<body>
+	<div id="header">
+		<h4>eCommerce</h4>
+		<a href="">Shopping Cart ({{request.session.total_items}})</a>
+	</div>
+	<div id="content">
+		<table class="table table-striped table-bordered table-sm">
+			<thead>
+				<tr>
+					<th>Item</th>
+					<th>Price</th>
+					<th>Name</th>
+					<th>Quantity</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for in session %}
+					<tr>
+						<td></td>
+						<td>{{product.id}}</td>
+						<td>{{product.name}}</td>
+						<td>{{product.inventory}}</td>
+						<td></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
