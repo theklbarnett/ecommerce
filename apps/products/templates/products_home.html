@@ -9,7 +9,11 @@
 <body>
 	<div id="header">
 		<h4>eCommerce</h4>
-		<a href="cart">Shopping Cart ({{request.session.total_items}})</a>
+		<a href="/products/cart">Shopping Cart 
+			{% if request.session.total_items %}
+				({{request.session.total_items}})
+			{% endif %}
+		</a>
 	</div>
 	<div id="content">
 		<div id="search-bar">

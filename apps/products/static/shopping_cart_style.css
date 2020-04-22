@@ -1,0 +1,63 @@
+#header {
+	background-color: #28a745;
+	border-bottom: black 2px solid;
+	padding: 5px 15px;
+}
+
+	#header a {
+		float: right;
+		margin-top: 15px;
+	}
+
+	#header	h4 {
+		display: inline-block;
+		margin-top: 10px;
+	}
+
+#content {
+	padding: 15px 20px;
+}
+#continue {
+	float: right;
+}
+
+.table img {
+	width: 20px;
+}
+
+.table a {
+	float: right;
+	margin-right: 5px;
+}
+
+.table input {
+	width: 25px;
+	text-align: center;
+}
+
+.update {
+	display: none;
+}
+
+#ship-bill {
+	width: 400px;
+	padding-top: 80px;
+}
+
+	#ship-bill .btn {
+		float: none;
+		display: block;
+		margin-left: auto;
+	}
+
+label {
+	width: 30%;
+}
+
+	label[for=same] {
+		width: 80%;
+	}
+
+	input[type=text] {
+		width: 68%;
+	}
