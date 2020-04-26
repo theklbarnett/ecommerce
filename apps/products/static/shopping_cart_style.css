@@ -39,6 +39,16 @@
 	display: none;
 }
 
+.messages {
+	color: red;
+	list-style-type: none;
+	font-size: 12px;
+	margin-top: 10px;
+	text-align: center;
+	margin-right: 90px;
+	padding: 0;
+}
+
 #ship-bill {
 	width: 400px;
 	padding-top: 80px;

@@ -31,9 +31,31 @@
 					$(this).next().next().css('display', 'none');
 				}
 			});
-
+			// Submits the changed quantity using the update link
 			$('.update').click(function () {
 				$(this).closest('form').submit();
+			});
+			// Restricts payment without the billing and shipping information
+			$('#pay').click(function(button) {		
+				var complete = true;
+				$("#ship-bill > input").each(function(index, element) {
+					if (element.type === "text" || element.type === "password") {
+						if (element.value == '' && element.name.slice(5) != "address_2") {
+				        	complete = false;
+				        	$("label[for='" + element.name + "']").css("color", 'red');
+				    	} else {
+				    		$("label[for='" + element.name + "']").css("color", 'black');
+				    	}
+					}
+				});
+				if (complete == false) {
+					if (!$('.incomplete_field').length) {
+						$(".messages.pay").append('<li class="incomplete_field">All fields must be filled</li>');
+					}
+					button.preventDefault();
+				} else {
+					$('.incomplete_field').remove();
+				}
 			});
 		});
 	</script>
@@ -66,7 +88,7 @@
 							<form action="update_cart" method="POST">
 								{% csrf_token %}
 								<input type="hidden" name="product_id" value="{{product.id}}">
-								<input name="quantity" value="{{product.quantity}}" data-og-quant="{{product.quantity}}"></input>
+								<input name="quantity" value="{{product.cart_quantity}}" data-og-quant="{{product.cart_quantity}}"></input>
 								<a href="delete/{{product.id}}"><img src="{% static 'trashcan.png' %}" alt="trashcan"></a>
 								<a class="update">update</a>
 							</form>
@@ -81,72 +103,82 @@
 			<a href="/products" class="btn btn-sm btn-success">Continue Shopping</a>
 		</div>
 		<form action='/products/checkout' method="POST" id="ship-bill">
+			{% csrf_token %}
 			<h4>Shipping Information</h4>
-				<label for="ship_first_name">First Name: </label>
-				<input type="text" name="ship_first_name" class="ship" value=''>
-				<label for="ship_last_name">Last Name: </label>
-				<input type="text" name="ship_last_name" class="ship">
-				<label for="ship_address">Address: </label>
-				<input type="text" name="ship_address" class="ship">
-				<label for="ship_address_2">Address 2: </label>
-				<input type="text" name="ship_address_2" class="ship">
-				<label for="ship_city">City: </label>
-				<input type="text" name="ship_city" class="ship">
-				<label for="ship_state">State: </label>
-				<input type="text" name="ship_state" class="ship">
-				<label for="ship_zip">Zipcode: </label>
-				<input type="text" name="ship_zip" class="ship">
+			<label for="ship_first_name">First Name: </label>
+			<input type="text" name="ship_first_name" class="ship" value=''>
+			<label for="ship_last_name">Last Name: </label>
+			<input type="text" name="ship_last_name" class="ship">
+			<label for="ship_address">Address: </label>
+			<input type="text" name="ship_address" class="ship">
+			<label for="ship_address_2">Address 2: </label>
+			<input type="text" name="ship_address_2" class="ship">
+			<label for="ship_city">City: </label>
+			<input type="text" name="ship_city" class="ship">
+			<label for="ship_state">State: </label>
+			<input type="text" name="ship_state" class="ship">
+			<label for="ship_zip">Zipcode: </label>
+			<input type="text" name="ship_zip" class="ship">
 			<h4>Billing Information</h4>
-				<input type="checkbox" name="same">
-				<label for="same">Same as Shipping</label>
-				<label for="bill_first_name">First Name: </label>
-				<input type="text" name="bill_first_name" class="bill">
-				<label for="bill_last_name">Last Name: </label>
-				<input type="text" name="bill_last_name" class="bill">
-				<label for="bill_address">Address: </label>
-				<input type="text" name="bill_address" class="bill">
-				<label for="bill_address_2">Address 2: </label>
-				<input type="text" name="bill_address_2" class="bill">
-				<label for="bill_city">City: </label>
-				<input type="text" name="bill_city" class="bill">
-				<label for="bill_state">State: </label>
-				<input type="text" name="bill_state" class="bill">
-				<label for="bill_zip">Zipcode: </label>
-				<input type="text" name="bill_zip" class="bill">
-				<label for="card_num">Card: </label>
-				<input type="text" name="card_num" maxlength="19">
-				<label for="security_code">Security Code: </label>
-				<input type="password" name="security_code" maxlength="3">
-				<label for="exp_mo exp_yr">Expiration: </label>
-				<select name="exp_mo">
-					<option value="1">01</option>
-					<option value="2">02</option>
-					<option value="3">03</option>
-					<option value="4">04</option>
-					<option value="5">05</option>
-					<option value="6">06</option>
-					<option value="7">07</option>
-					<option value="8">08</option>
-					<option value="9">09</option>
-					<option value="10">10</option>
-					<option value="11">11</option>
-					<option value="12">12</option>
-				</select>
-				<select name="exp_yr">
-					<option value="2020">2020</option>
-					<option value="2021">2021</option>
-					<option value="2022">2022</option>
-					<option value="2023">2023</option>
-					<option value="2024">2024</option>
-					<option value="2025">2025</option>
-					<option value="2026">2026</option>
-					<option value="2027">2027</option>
-					<option value="2028">2028</option>
-					<option value="2029">2029</option>
-					<option value="2030">2030</option>
-				</select>	
-				<button class="btn btn-sm btn-primary">Pay</button>
+			<input type="checkbox" name="same">
+			<label for="same">Same as Shipping</label>
+			<label for="bill_first_name">First Name: </label>
+			<input type="text" name="bill_first_name" class="bill">
+			<label for="bill_last_name">Last Name: </label>
+			<input type="text" name="bill_last_name" class="bill">
+			<label for="bill_address">Address: </label>
+			<input type="text" name="bill_address" class="bill">
+			<label for="bill_address_2">Address 2: </label>
+			<input type="text" name="bill_address_2" class="bill">
+			<label for="bill_city">City: </label>
+			<input type="text" name="bill_city" class="bill">
+			<label for="bill_state">State: </label>
+			<input type="text" name="bill_state" class="bill">
+			<label for="bill_zip">Zipcode: </label>
+			<input type="text" name="bill_zip" class="bill">
+			<label for="card_num">Card: </label>
+			<input type="text" name="card_num" maxlength="19">
+			<label for="security_code">Security Code: </label>
+			<input type="password" name="security_code" maxlength="3">
+			<label for="exp_mo exp_yr">Expiration: </label>
+			<select name="exp_mo">
+				<option value="1">01</option>
+				<option value="2">02</option>
+				<option value="3">03</option>
+				<option value="4">04</option>
+				<option value="5">05</option>
+				<option value="6">06</option>
+				<option value="7">07</option>
+				<option value="8">08</option>
+				<option value="9">09</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+			</select>
+			<select name="exp_yr">
+				<option value="2020">2020</option>
+				<option value="2021">2021</option>
+				<option value="2022">2022</option>
+				<option value="2023">2023</option>
+				<option value="2024">2024</option>
+				<option value="2025">2025</option>
+				<option value="2026">2026</option>
+				<option value="2027">2027</option>
+				<option value="2028">2028</option>
+				<option value="2029">2029</option>
+				<option value="2030">2030</option>
+			</select>	
+			<button id="pay" class="btn btn-sm btn-primary">Pay</button>
 		</form>
+		<ul class="messages pay">
+			{% if messages %}
+				{% for message in messages %}
+					{% if message.extra_tags == 'pay' %}
+						<li>{{ message }}</li>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		</ul>	
 	</div>
 </body>
 </html>

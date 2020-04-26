@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Order Confirmation | eCommerce</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'shopping_cart_style.css' %}">
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			
+		});
+	</script>
+</head>
+<body>
+	<div id="header">
+		<h4>eCommerce</h4>
+	</div>
+	<div id="content">
+		<h2>Thank you for your order!</h2>
+		<p>Your order number is {{order.id}}</p>
+	</div>
+</body>
+</html>

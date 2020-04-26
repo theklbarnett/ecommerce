@@ -7,6 +7,28 @@
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static 'dashboard_style.css' %}">
 	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			// Updates database on order status change
+			$(document).on('change', '.status', function() {
+				$.ajax({
+					url: 'ajax/status_change',
+					data: {
+						'newstatus': $(this).val(),
+						'order_id': $(this).parent().parent().attr('id').slice(1)
+					},
+					dataType: 'json',
+					success: function (data) {
+		
+					}
+				});
+			});
+			// Allows table to be filtered by order status
+			$('#status-filter').change(function() {
+				$('tbody').html('').load("{% url 'dashboard:filter-orders' %}?status=" + $(this).val());		
+			});
+		});
+	</script>
 </head>
 <body>
 	<div id="header">
@@ -16,23 +38,30 @@
 		<a href="/dashboard/logout" id="logout">Log off</a>
 	</div>
 	<div id="content">
-		<div class="topnav">
-			<input type="text" name="search" placeholder="search">
-			<select>
-				<option selected>Show All</option>
-				<option>Order in process</option>
-				<option>Shipped</option>
-				<option>Cancelled</option>
+		<div class="top-nav">
+			<form method="GET" action="/dashboard/search-orders">
+				<input type="text" name="search" placeholder="search">
+			</form>
+			<select id="status-filter">
+				<option value="Show-All">Show All</option>
+				<option value="Order-in-process">Order in process</option>
+				<option value="Shipped">Shipped</option>
+				<option value="Cancelled">Cancelled</option>
 			</select>
 		</div>
-		<table class="table">
+		<table class="table table-striped table-bordered table-sm">
 			<thead>
 				<tr>
-					<th></th>
+					<th>Order ID</th>
+					<th>Name</th>
+					<th>Date</th>
+					<th>Billing Address</th>
+					<th>Total</th>
+					<th>Status</th>
 				</tr>
 			</thead>
 			<tbody>
-				
+				{% include 'order_table.html' %}
 			</tbody>
 		</table>
 	</div>

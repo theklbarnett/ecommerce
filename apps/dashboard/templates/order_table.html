@@ -1,0 +1,28 @@
+{% for order in orders %}
+	<tr class="order" id="o{{order.id}}">
+		<td><a href="orders/show/{{order.id}}">{{order.id}}</a></td>
+		<td>{{order.billing.first_name}}</td>
+		<td>{{order.created_at}}</td>
+		<td>{{order.billing.address}} {{order.billing.city}} {{order.billing.state}} {{order.billing.zipcode}}</td>
+		<td>${{order.subtotal}}</td>
+		<td>
+			<select class="status {{order.status}}">
+				<option value='Order-in-process'
+					{% if order.status == "Order in process" %}
+						selected
+					{% endif %}
+				>Order in process</option>
+				<option value='Shipped'
+					{% if order.status == "Shipped" %}
+						selected
+					{% endif %}
+				>Shipped</option>
+				<option value='Cancelled'
+					{% if order.status == "Cancelled" %}
+						selected
+					{% endif %}
+				>Cancelled</option>
+			</select>
+		</td>
+	</tr>
+{% endfor %}

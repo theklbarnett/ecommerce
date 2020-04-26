@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .models import Product, Category
 from django.db.models.aggregates import Count
-from apps.dashboard.models import 
+from apps.dashboard.models import Order, CustomerShipping, CustomerBilling, Quantity
 
 def render_products_home(request):
 	#request.session.flush()
@@ -34,9 +34,10 @@ def render_shopping_cart(request):
 			'total_price' : 0
 		}
 		for product in context['cart']:
-			product.quantity = request.session[str(product.id)]
-			product.total = product.quantity * product.price
+			product.cart_quantity = request.session[str(product.id)]
+			product.total = product.cart_quantity * product.price
 			context['total_price'] += product.total
+		request.session['checkout_total'] = str(context['total_price'])
 		return render(request, 'shopping_cart.html', context)
 	else:
 		return redirect('/products')
@@ -81,8 +82,31 @@ def search_products(request):
 # To actually charge the card I would incorporate paypal into the site by accessing
 ## their API
 def checkout(request):
-	pass
+	if request.session.get('item_ids', False):
+		newship = CustomerShipping.objects.create(first_name=request.POST['ship_first_name'], last_name=request.POST['ship_last_name'], address=request.POST['ship_address'], city=request.POST['ship_city'], state=request.POST['ship_state'], zipcode=int(request.POST['ship_zip']))
+		if request.POST.get('ship_address_2', False):
+			newship.address_2 = request.POST['ship_address_2']
+			newship.save()
+		newbill = CustomerBilling.objects.create(first_name=request.POST['bill_first_name'], last_name=request.POST['bill_last_name'], address=request.POST['bill_address'], city=request.POST['bill_city'], state=request.POST['bill_state'], zipcode=int(request.POST['bill_zip']))
+		if request.POST.get('bill_address_2', False):
+			newbill.address_2 = request.POST['bill_address_2']
+			newbill.save()
+		neworder = Order.objects.create(subtotal=float(request.session['checkout_total']), shipping=newship, billing=newbill, status="Order in process")
+		for product in request.session['item_ids']:
+			Quantity.objects.create(number=int(request.session[product]), product=Product.objects.get(id=int(product)), order=neworder)
+			product.inventory -= int(request.session[product])
+			product.save()
+			neworder.products.add(Product.objects.get(id=int(product)))
+		request.session.flush()
 
+		return redirect(f'/products/checkout/order/{neworder.id}')
+	else:
+		return redirect('/products')
 
+def order_confirmation(request, id):
+	context = {
+		'order': Order.objects.get(id=id)
+	}
+	return render(request, 'order_confirmation.html', context)
 
 

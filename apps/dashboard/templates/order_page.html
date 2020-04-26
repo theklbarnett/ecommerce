@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Order {{order.id}}</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'order_page_style.css' %}">
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			if('{{order.status}}' == 'Cancelled') {
+				$('#status').css('background-color', 'red');
+			} else if ('{{order.status}}' == 'Shipped') {
+				$('#status').css('background-color', 'lightgreen');
+			}
+		});
+	</script>
+</head>
+<body>
+	<div id="header">
+		<h2>Admin Dashboard</h2>
+		<a href="/dashboard/orders">Orders</a>
+		<a href="/dashboard/products">Products</a>
+		<a href="/dashboard/logout" id="logout">Log off</a>
+	</div>
+	<div id="content">
+		<div id="order-info">
+			<p>Order ID: {{order.id}}</p>
+			<br>
+			<p>Customer shipping info: </p>
+			<p>Name: {{order.shipping.first_name}}</p>
+			<p>Address: {{order.shipping.address}}</p>
+			<p>City: {{order.shipping.city}}</p>
+			<p>State: {{order.shipping.state}}</p>
+			<p>Zip: {{order.shipping.zipcode}}</p>
+			<br>
+			<p>Customer billing info: </p>
+			<p>Name: {{order.billing.first_name}}</p>
+			<p>Address: {{order.billing.address}}</p>
+			<p>City: {{order.billing.city}}</p>
+			<p>State: {{order.billing.state}}</p>
+			<p>Zip: {{order.billing.zipcode}}</p>
+		</div>
+		<div id="sub-content">
+			<table class="table table-striped table-bordered table-sm">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Item</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for product in products %}
+						<tr class="product" id="p{{product.id}}">
+							<td>{{product.id}}</td>
+							<td>{{product.name}}</td>
+							<td>{{product.price}}</td>
+							<td>{{product.quant}}</td>
+							<td>{{product.quantprice}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<p id="status">Status: {{order.status}}</p>
+			<div id="pricing">
+				<p>Sub-Total: ${{order.subtotal}}</p>
+				<p>Shipping: Free</p>
+				<p>Total Price: ${{order.subtotal}}</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

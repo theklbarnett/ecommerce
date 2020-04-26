@@ -82,7 +82,9 @@ img {
 	margin-left: 20%;
 }
 
-
+#status-filter {
+	float: right;
+}
 
 @media only screen and (max-width: 530px) {
 	#header h2 {
