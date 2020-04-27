@@ -1,0 +1,33 @@
+{% csrf_token %}
+<div id="form-header">
+	<h6>Edit Product - ID {{product.id}}</h6>
+	<input type="hidden" name="product_id" value="{{product.id}}">
+	<button type="reset" class="btn btn-sm btn-outline-light close">X</button>
+</div>
+<label>Name
+	<input type="text" name="name" value="{{product.name}}">
+</label>
+<label>Price
+	<input type="text" name="price" value="{{product.price}}">
+</label>
+<label>Description
+	<input type="text" name="description" value="{{product.description}}">
+</label>
+<label>Categories
+	<select name="category">
+		{% for category in categories %}
+			<option value="{{category.id}}" 
+				{% if category.id == product.category.id %}
+					selected 
+				{% endif %}
+			>{{category.name}}</option>
+		{% endfor %}
+	</select>
+</label>
+<label>or add new category:
+	<input type="text" name="new_category">
+</label>
+<label>Images
+	<input type="file" name="img" accept="image/*" multiple="multiple">
+</label>
+<button class="btn btn-sm btn-primary">Update</button>

@@ -80,3 +80,20 @@ def render_order_page(request, id):
 		'products': Product.objects.filter(orders__id=id).annotate(quant=F('quantity__number'), quantprice=(ExpressionWrapper(F('quantity__number')*F('price'), output_field=FloatField()))),
 	}
 	return render(request, 'order_page.html', context)
+
+def render_edit_product(request):
+	context = {
+		'product': Product.objects.get(id=request.GET['product-id']),
+		'categories': Category.objects.all()
+	}
+	return render(request, 'edit_product_form.html', context)
+
+def edit_product(request):
+	if request.method == 'POST':
+		p = Product.objects.get(id=request.POST['product_id'])
+		p.name = request.POST['name']
+		p.price = request.POST['price']
+		p.description = request.POST['description']
+		p.category = Category.objects.get(id=request.POST['category'])
+		p.save()
+	return redirect('/dashboard/products')

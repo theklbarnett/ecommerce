@@ -10,13 +10,11 @@
 	<script>
 		$(document).ready(function() {
 			$('#new-product').click(function() {
-				$('.popup-form').css('display', 'inline-block');
-			});
-			
-			$('.close').click(function() {
+				$('.popup-form.add').css('display', 'inline-block');
+			});	
+			$(document).on('click', '.close', function() {
 				$('.popup-form').css('display', 'none');
 			});
-
 			$('.delete').click(function() {
 				if ($(this).parent().parent().attr('class').includes('product')) {
 					var product_id = $(this).parent().parent().attr('id').slice(1)
@@ -34,8 +32,13 @@
 					});
 				}
 			});
+			$('.edit').click(function() {
+				var product_id = $(this).parent().parent().attr('id').slice(1)
+				$('.popup-form.edit').html('').load("{% url 'dashboard:edit-product' %}?product-id=" + product_id);
+				$('.popup-form.edit').css('display', 'inline-block');	
+				return false;
+			});
 		});
-
 	</script>
 </head>
 <body>
@@ -71,12 +74,12 @@
 						<td>{{product.name}}</td>
 						<td>{{product.inventory}}</td>
 						<td>{{product.sold}}</td>
-						<td><a href="">edit</a> | <a href="" class="delete">delete</a></td>
+						<td><a href="" class="edit">edit</a> | <a href="" class="delete">delete</a></td>
 					</tr>
 				{% endfor %}
 			</tbody>
 		</table>
-		<form action="add_product" method="POST" class="popup-form" enctype="multipart/form-data">
+		<form action="add_product" method="POST" class="popup-form add" enctype="multipart/form-data">
 			{% csrf_token %}
 			<div id="form-header">
 				<h6>Add a new product</h6>
@@ -105,6 +108,9 @@
 		    	<input type="file" name="img" accept="image/*" multiple="multiple">
 		    </label>
 		    <button class="btn btn-sm btn-primary">Add</button>
+		</form>
+		<form action="update-product" method="POST" class="popup-form edit" enctype="multipart/form-data">
+			{% include 'edit_product_form.html' %}
 		</form>
 	</div>
 </body>
