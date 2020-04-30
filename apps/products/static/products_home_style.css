@@ -1,5 +1,5 @@
 #header {
-	background-color: #28a745;
+	background-color: darkred;
 	border-bottom: black 2px solid;
 	padding: 5px 15px;
 }
@@ -12,19 +12,22 @@
 	#header	h4 {
 		display: inline-block;
 		margin-top: 10px;
+		color: white;
 	}
 
 #content {
 	padding: 15px 20px;
+
 }
 
 #search-bar {
 	margin-left: 5px;
 	display: inline-block;
 	border: black 2px solid;
-	width: 20%;
 	vertical-align: top;
 	padding: 5px;
+	border-radius: 20px;
+	width: 140px;
 }
 
 	#search-bar input {
@@ -46,6 +49,7 @@
 	margin-left: 5px;
 	display: inline-block;
 	border: black 2px solid;
+	border-radius: 20px;
 	width: 75%;
 	padding: 20px;
 }
@@ -70,3 +74,20 @@
 		color: rgba(0, 0, 0, 0.5);
 		text-align: right;	
 	}
+
+@media only screen and (max-width: 656px) {
+	#search-bar {
+		display: block;
+		width: 100%;
+		margin-bottom: 5px;
+	}
+	#search-bar a {
+		display: none;
+	}
+	#search-bar h6 {
+		display: none;
+	}
+	#items {
+		width: 100%;
+	}
+}

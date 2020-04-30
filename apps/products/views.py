@@ -4,7 +4,6 @@ from django.db.models.aggregates import Count
 from apps.dashboard.models import Order, CustomerShipping, CustomerBilling, Quantity
 
 def render_products_home(request):
-	#request.session.flush()
 	context = {
 		'products': Product.objects.all(),
 		'categories': Category.objects.all().annotate(len=Count('products')),
@@ -22,7 +21,7 @@ def render_product_page(request, id):
 def render_category_page(request, name):
 	context = {
 		'products': Product.objects.filter(category_id=Category.objects.get(name=name).id),
-		'categories': Category.objects.all().annotate(len=Count('id')),
+		'categories': Category.objects.all().annotate(len=Count('products')),
 		'page': name
 	}
 	return render(request, 'products_home.html', context)

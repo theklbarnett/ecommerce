@@ -1,5 +1,5 @@
 #header {
-	background-color: #28a745;
+	background-color: darkred;
 	border-bottom: black 2px solid;
 	padding: 5px 15px;
 }
@@ -12,6 +12,7 @@
 	#header	h4 {
 		display: inline-block;
 		margin-top: 10px;
+		color: white;
 	}
 
 #content {
@@ -79,3 +80,4 @@ select {
 		display: block;
 		width: 100%;
 	}
+
